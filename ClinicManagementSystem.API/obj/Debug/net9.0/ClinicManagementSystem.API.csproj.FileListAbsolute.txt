@@ -148,3 +148,4 @@ D:\Projects\ClinicManagementSystem\ClinicManagementSystem.API\obj\Debug\net9.0\r
 D:\Projects\ClinicManagementSystem\ClinicManagementSystem.API\obj\Debug\net9.0\ClinicManagementSystem.API.pdb
 D:\Projects\ClinicManagementSystem\ClinicManagementSystem.API\obj\Debug\net9.0\ClinicManagementSystem.API.genruntimeconfig.cache
 D:\Projects\ClinicManagementSystem\ClinicManagementSystem.API\obj\Debug\net9.0\ref\ClinicManagementSystem.API.dll
+D:\Projects\ClinicManagementSystem\ClinicManagementSystem.API\obj\Debug\net9.0\ClinicManagementSystem.API.sourcelink.json
