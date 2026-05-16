@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Db;
+using ClinicManagementSystem.Dto;
 using ClinicManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,26 @@ public class MedicalRecordsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<MedicalRecord>> PostMedicalRecord(MedicalRecord item)
+    public async Task<ActionResult<MedicalRecord>> PostMedicalRecord(MedicalRecordDto dto)
     {
+        var item = new MedicalRecord 
+        { 
+            PatientId = dto.PatientId, 
+            CreationDate = dto.CreationDate 
+        };
         _context.MedicalRecords.Add(item);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetMedicalRecord), new { id = item.Id }, item);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutMedicalRecord(Guid id, MedicalRecord item)
+    public async Task<IActionResult> PutMedicalRecord(Guid id, MedicalRecordDto dto)
     {
-        if (id != item.Id) return BadRequest();
-        _context.Entry(item).State = EntityState.Modified;
+        var item = await _context.MedicalRecords.FindAsync(id);
+        if (item == null) return NotFound();
+
+        item.PatientId = dto.PatientId;
+        item.CreationDate = dto.CreationDate;
         await _context.SaveChangesAsync();
         return NoContent();
     }

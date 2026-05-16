@@ -20,6 +20,6 @@ public class Appointment
     public AppointmentStatus Status { get; set; }
     public string ReasonForVisit { get; set; }
 
-    public virtual Patient Patient { get; set; }
-    public virtual Doctor Doctor { get; set; }
+    public virtual Patient? Patient { get; set; }
+    public virtual Doctor? Doctor { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Db;
+using ClinicManagementSystem.Dto;
 using ClinicManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,22 @@ public class DepartmentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Department>> PostDepartment(Department item)
+    public async Task<ActionResult<Department>> PostDepartment(DepartmentDto dto)
     {
+        var item = new Department { Name = dto.Name, Location = dto.Location };
         _context.Departments.Add(item);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetDepartment), new { id = item.Id }, item);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDepartment(Guid id, Department item)
+    public async Task<IActionResult> PutDepartment(Guid id, DepartmentDto dto)
     {
-        if (id != item.Id) return BadRequest();
-        _context.Entry(item).State = EntityState.Modified;
+        var item = await _context.Departments.FindAsync(id);
+        if (item == null) return NotFound();
+        
+        item.Name = dto.Name;
+        item.Location = dto.Location;
         await _context.SaveChangesAsync();
         return NoContent();
     }

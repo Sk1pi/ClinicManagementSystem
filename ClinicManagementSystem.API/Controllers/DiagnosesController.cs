@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Db;
+using ClinicManagementSystem.Dto;
 using ClinicManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,32 @@ public class DiagnosesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Diagnosis>> PostDiagnosis(Diagnosis item)
+    public async Task<ActionResult<Diagnosis>> PostDiagnosis(DiagnosisDto dto)
     {
+        var item = new Diagnosis 
+        { 
+            MedicalRecordId = dto.MedicalRecordId, 
+            DoctorId = dto.DoctorId, 
+            DateDiagnosed = dto.DateDiagnosed, 
+            DiseaseName = dto.DiseaseName, 
+            Prescription = dto.Prescription 
+        };
         _context.Diagnoses.Add(item);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetDiagnosis), new { id = item.Id }, item);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDiagnosis(Guid id, Diagnosis item)
+    public async Task<IActionResult> PutDiagnosis(Guid id, DiagnosisDto dto)
     {
-        if (id != item.Id) return BadRequest();
-        _context.Entry(item).State = EntityState.Modified;
+        var item = await _context.Diagnoses.FindAsync(id);
+        if (item == null) return NotFound();
+
+        item.MedicalRecordId = dto.MedicalRecordId;
+        item.DoctorId = dto.DoctorId;
+        item.DateDiagnosed = dto.DateDiagnosed;
+        item.DiseaseName = dto.DiseaseName;
+        item.Prescription = dto.Prescription;
         await _context.SaveChangesAsync();
         return NoContent();
     }

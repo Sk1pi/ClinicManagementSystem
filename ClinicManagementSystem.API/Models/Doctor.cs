@@ -9,7 +9,7 @@ public class Doctor
     public int ExperienceYears { get; set; }
     
     public Guid DepartmentId { get; set; }
-    public virtual Department Department { get; set; }
+    public virtual Department? Department { get; set; }
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }

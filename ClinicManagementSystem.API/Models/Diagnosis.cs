@@ -13,6 +13,6 @@ public class Diagnosis
     public string DiseaseName { get; set; }
     public string Prescription { get; set; }
 
-    public virtual MedicalRecord MedicalRecord { get; set; }
-    public virtual Doctor Doctor { get; set; }
+    public virtual MedicalRecord? MedicalRecord { get; set; }
+    public virtual Doctor? Doctor { get; set; }
 }

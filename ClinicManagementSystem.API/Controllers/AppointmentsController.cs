@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Db;
+using ClinicManagementSystem.Dto;
 using ClinicManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,32 @@ public class AppointmentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Appointment>> PostAppointment(Appointment item)
+    public async Task<ActionResult<Appointment>> PostAppointment(AppointmentDto dto)
     {
+        var item = new Appointment 
+        { 
+            PatientId = dto.PatientId, 
+            DoctorId = dto.DoctorId, 
+            AppointmentDate = dto.AppointmentDate, 
+            Status = (AppointmentStatus)dto.Status, 
+            ReasonForVisit = dto.ReasonForVisit 
+        };
         _context.Appointments.Add(item);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetAppointment), new { id = item.Id }, item);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAppointment(Guid id, Appointment item)
+    public async Task<IActionResult> PutAppointment(Guid id, AppointmentDto dto)
     {
-        if (id != item.Id) return BadRequest();
-        _context.Entry(item).State = EntityState.Modified;
+        var item = await _context.Appointments.FindAsync(id);
+        if (item == null) return NotFound();
+
+        item.PatientId = dto.PatientId;
+        item.DoctorId = dto.DoctorId;
+        item.AppointmentDate = dto.AppointmentDate;
+        item.Status = (AppointmentStatus)dto.Status;
+        item.ReasonForVisit = dto.ReasonForVisit;
         await _context.SaveChangesAsync();
         return NoContent();
     }
